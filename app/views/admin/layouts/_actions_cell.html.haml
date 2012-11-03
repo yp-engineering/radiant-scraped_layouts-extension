@@ -1,0 +1,3 @@
+%td.actions
+  - unless layout.scraped?
+    = link_to image('minus') + ' ' + t('remove'), remove_admin_layout_url(layout), :class => "action"

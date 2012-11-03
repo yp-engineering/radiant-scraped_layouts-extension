@@ -1,0 +1,12 @@
+---
+en:
+  scraped_layout: Scraped Layout
+  scraped_layouts: Scraped Layouts
+  scraper: Scraper
+  no_scrapers: No Scraped Layouts
+  new_scraper: New Scraped Layout
+  delete_scraper: Delete Scraper
+  remove_scraper: Remove Scraper
+  text:
+    scrapers:
+      remove_warning: 'Are you sure you want to <strong class="warning">permanently remove</strong> the following layout?'

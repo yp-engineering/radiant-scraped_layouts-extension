@@ -1,0 +1,30 @@
+- form_for [:admin, @scraper] do |f|
+  = render_region :form_top, :locals => {:f => f}
+
+  - render_region :form do |form|
+    - form.edit_title do
+      %p
+        = f.label :title
+        = f.text_field :title, :class => 'textbox'
+    - form.edit_url do
+      %p
+        %label{:for => "scraper_url"} URL
+        = f.text_field :url, :class => 'textbox'
+    - form.edit_description do
+      %p
+        %label{:for => "scraper_description"} Description
+        = f.text_field :description, :class => 'textbox'
+
+    - form.edit_inserts do
+      - f.fields_for :scraper_inserts do |insert_form|
+        = render :partial => 'admin/scraper_inserts/scraper_insert', :locals => { :f => insert_form }
+
+      = submit_tag 'Add Insert', :name => 'add_insert'
+
+  - render_region :form_bottom do |form_bottom|
+    - form_bottom.edit_buttons do
+      %p.buttons
+        = save_model_button(@scraper)
+        = save_model_and_continue_editing_button(@scraper)
+        or
+        = link_to "Cancel", admin_scrapers_path

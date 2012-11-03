@@ -1,0 +1,35 @@
+- @page_title = t('scraped_layouts') + ' - ' + default_page_title
+
+.outset
+  = render_region :top
+  %table.index#scrapers
+    %thead
+      %tr
+        - render_region :thead do |thead|
+          - thead.title_header do
+            %th.name
+              = t('scraper')
+          - thead.actions_header do
+            %th.actions{:style=>"width:9em"}
+              = t('modify')
+    %tbody
+      - if @scrapers.any?
+        - @scrapers.each do |scraper|
+          %tr[scraper]
+            - render_region :tbody, :locals => {:scraper => scraper} do |tbody|
+              - tbody.title_cell do
+                %td.name
+                  = link_to image('layout', :alt => '') + ' ' + scraper.title, edit_admin_scraper_url(scraper)
+              - tbody.actions_cell do
+                %td.actions
+                  = link_to image('minus') + ' ' + t('remove'), remove_admin_scraper_url(scraper), :class => "action"
+      - else
+        %tr
+          %td.empty{:colspan => admin.scrapers.index.tbody.length}= t('no_scrapers')
+
+- render_region :bottom do |bottom|
+  - bottom.new_button do
+    #actions
+      = pagination_for(@scrapers)
+      %ul
+        %li= link_to image('plus') + " " + t('new_scraper'), new_admin_scraper_url, :class => 'action_button'

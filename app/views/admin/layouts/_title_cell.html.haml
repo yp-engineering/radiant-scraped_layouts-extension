@@ -1,0 +1,5 @@
+%td.name
+  - if layout.scraped?
+    %em= link_to image('virtual_page', :alt => '') + ' ' + layout.name, edit_admin_layout_url(layout)
+  -else
+    = link_to image('layout', :alt => '') + ' ' + layout.name, edit_admin_layout_url(layout)
