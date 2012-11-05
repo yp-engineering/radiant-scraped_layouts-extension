@@ -1,0 +1,15 @@
+- @page_title = @layout.name + ' ' + t('layout') + ' - ' + default_page_title
+
+- render_region :main do |main|
+  - if @layout.scraped?
+    - main.edit_header do
+      %h1= 'Scraped Layout'
+    - main.edit_form do
+      = render :partial => 'disabled_form'
+  - else
+    - main.edit_header do
+      %h1= t('edit_layout')
+    - main.edit_form do
+      = render :partial => 'form'
+
+- content_for 'page_scripts', layout_edit_javascripts

@@ -1,0 +1,32 @@
+- form_for [:admin, @layout] do |f|
+  = f.hidden_field :lock_version
+  = render_region :form_top, :locals => {:f => f}
+  .form_area
+    - render_region :form, :locals => {:f => f} do |form|
+      - form.edit_title do
+        %p.title
+          = f.label :name, t('name')
+          = f.text_field :name, :maxlength => 100, :class => "disabled textbox", :disabled => true
+      - form.edit_extended_metadata do
+        .drawer
+          .drawer_contents#attributes
+            %table.fieldset
+              %tr
+                %th.label= f.label :content_type, t('content_type')
+                %td.field= f.text_field :content_type, :maxlength => 40, :class => "disabled textbox", :disabled => true
+              = render_region :extended_metadata, :locals => {:f => f}
+          .drawer_handle
+            %a.toggle{:href=>'#attributes', :rel=>"toggle[attributes]", :class=>"#{(meta_errors? ? 'less' : 'more')}"}= meta_label
+      - form.edit_content do
+        %p.content
+          = f.label :layout_content, "Body"
+          ~ f.text_area :content, :size => "40x20", :style => "width: 100%", :class => "disabled textarea large", :disabled => true
+  - render_region :form_bottom, :locals => {:f => f} do |form_bottom|
+    - form_bottom.reference_links do
+      %p{ :style => 'padding: 2ex 1em; border: 6px outset #f00; text-align: center; color: #c00; font-weight: bold; background: #fff;' }
+        This layout has been generated and may not be directly edited.
+    - form_bottom.edit_buttons do
+      .buttons
+        = link_to '&laquo; Return to Index', admin_layouts_url
+    - form_bottom.edit_timestamp do
+      = updated_stamp @layout

@@ -1,11 +1,11 @@
 # Uncomment this if you reference any of your controllers in activate
 # require_dependency "application_controller"
-require "radiant-scraped_layout-extension"
+require "radiant-scraped_layouts-extension"
 
-class ScrapedLayoutExtension < Radiant::Extension
-  version     RadiantScrapedLayoutExtension::VERSION
-  description RadiantScrapedLayoutExtension::DESCRIPTION
-  url         RadiantScrapedLayoutExtension::URL
+class ScrapedLayoutsExtension < Radiant::Extension
+  version     RadiantScrapedLayoutsExtension::VERSION
+  description RadiantScrapedLayoutsExtension::DESCRIPTION
+  url         RadiantScrapedLayoutsExtension::URL
 
   # See your config/routes.rb file in this extension to define custom routes
 
@@ -24,8 +24,6 @@ class ScrapedLayoutExtension < Radiant::Extension
         !scraper.nil?
       end
     end
-
-    admin.layout.edit.add :main, 'admin/layouts/warning', :after => 'edit_header'
 
     tab 'Design' do
       add_item "Scraped Layouts", "/admin/scrapers", :after => "Layouts"
