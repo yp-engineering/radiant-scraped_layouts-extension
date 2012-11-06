@@ -1,0 +1,5 @@
+one:
+  id: 1
+  regex: <!-- CANVAS INSERTION POINT -->
+  content: <div id="canvas">Content</div>
+  scraper_id: 1

@@ -1,9 +1,10 @@
-.box
-  %p
-    = f.submit 'Remove Insert', :name => "scraper[scraper_inserts_attributes][#{f.object_name.gsub(/[^0-9]+/,'')}][remove]"
-  %p
-    = f.label :regex
-    = f.text_field :regex, :class => 'textbox', :size => 90
-  %p
-    = f.label :content
-    = f.text_area :content, :class => 'textareae', :cols => 90, :rows => 10
+%hr
+
+%p
+  = f.submit 'Remove Insert', :name => "scraper[scraper_inserts_attributes][#{f.object_name.gsub(/[^0-9]+/,'')}][remove]"
+%p
+  = f.label :regex
+  = f.text_field :regex, :class => 'textbox', :size => 90
+%p
+  = f.label :content
+  = f.text_area :content, :class => 'textareae', :cols => 90, :rows => 10
