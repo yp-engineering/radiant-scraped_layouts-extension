@@ -8,11 +8,7 @@ class Admin::ScrapersController < Admin::ResourceController
 
   def create
     @scraper = Scraper.new(params[:scraper])
-    @scraper.layout = Layout.new({
-      :name => "#{@scraper.title} (scraped)",
-      :content => scrape_site(@scraper),
-      :generated => true
-    })
+    @scraper.layout = Layout.new({ :name => "#{@scraper.title} (scraped)" })
 
     save_scraper
   end
@@ -20,8 +16,6 @@ class Admin::ScrapersController < Admin::ResourceController
   def update
     @scraper = Scraper.find(params[:id])
     @scraper.update_attributes(params[:scraper])
-    @scraper.layout.content = scrape_site(@scraper)
-    @scraper.layout.generated = true
 
     save_scraper :edit
   end
@@ -30,10 +24,16 @@ class Admin::ScrapersController < Admin::ResourceController
 
   def save_scraper(action = :new)
     if !manage_inserts?(@scraper) && @scraper.save
+      scrape_site(@scraper)
+
       flash[:notice] = "Scraper successfully #{action == :new ? 'created' : 'updated'}"
 
       redirect_to admin_scrapers_path
     else
+      unless @scraper.errors.empty?
+        flash[:error] = @scraper.errors.full_messages.join(' ')
+      end
+
       render :action => action
     end
   end
@@ -49,6 +49,7 @@ class Admin::ScrapersController < Admin::ResourceController
 
     if params[:add_insert]
       scraper.scraper_inserts << ScraperInsert.new
+      scraper.scraper_inserts.last.errors.clear # TODO: manage this separately so Rails won't try to save it automatically.
       managed = true
     end
 
@@ -56,12 +57,18 @@ class Admin::ScrapersController < Admin::ResourceController
   end
 
   def scrape_site(scraper)
-    html = Net::HTTP.get_response(URI(scraper.url)).body
+    begin
+      html = Net::HTTP.get_response(URI(scraper.url)).body
 
-    scraper.scraper_inserts.each do |insert|
-      html.gsub!(Regexp.new(insert.regex), insert.content)
+      scraper.scraper_inserts.each do |insert|
+        html.gsub!(Regexp.new(insert.regex), insert.content)
+      end
+
+      scraper.layout.content = html
+      scraper.layout.generated = true
+    rescue
+      scraper.layout.content = nil
+      scraper.layout.generated = false
     end
-
-    html
   end
 end

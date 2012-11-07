@@ -18,7 +18,7 @@ class ScrapedLayoutsExtension < Radiant::Extension
       has_one :scraper
 
       attr_accessor :generated
-      validates_presence_of :generated, :message => 'NO!'
+      validates_presence_of :generated, :if => :scraped?, :message => 'layouts may only be created or edited within the Scraped Layouts section, and when supplied with a working URL.'
 
       def scraped?
         !scraper.nil?
