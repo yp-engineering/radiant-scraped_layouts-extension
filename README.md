@@ -1,5 +1,7 @@
 # Scraped Layouts
 
-Scrapes a webpage and creates a layout that uses regular expressions to insert content.
+This extension allows a Radiant designer to pull a webpage from a given URL, replace portions of it using regular expressions, and save the outcome as a standard (but uneditable) Radiant layout.
 
-Created by Charles Hudson.
+---
+
+Created by Charles Hudson for YP Intellectual Property, LLC (yellowpages.com).
