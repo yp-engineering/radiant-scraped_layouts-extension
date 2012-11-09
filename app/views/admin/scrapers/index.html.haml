@@ -19,7 +19,7 @@
             - render_region :tbody, :locals => {:scraper => scraper} do |tbody|
               - tbody.title_cell do
                 %td.name
-                  = link_to image('layout', :alt => '') + ' ' + scraper.title, edit_admin_scraper_url(scraper)
+                  = link_to image('layout', :alt => '') + ' ' + scraper.name, edit_admin_scraper_url(scraper)
               - tbody.actions_cell do
                 %td.actions
                   = link_to image('minus') + ' ' + t('remove'), remove_admin_scraper_url(scraper), :class => "action"

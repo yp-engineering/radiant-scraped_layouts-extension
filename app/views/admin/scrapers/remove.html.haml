@@ -7,7 +7,7 @@
     %tr.node.level_1
       %td.scraper
         = image('layout', :alt => '')
-        = h @scraper.title
+        = h @scraper.name
 
 - form_for [:admin, @scraper], :html => { :method => 'delete', 'data-onsubmit_status'=>"Removing scraper&#8230;" } do
   .buttons

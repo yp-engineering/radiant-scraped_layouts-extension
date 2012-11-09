@@ -1,5 +1,3 @@
-one:
-  id: 1
+yellowpages_canvas:
   regex: <!-- CANVAS INSERTION POINT -->
   content: <div id="canvas">Content</div>
-  scraper_id: 1

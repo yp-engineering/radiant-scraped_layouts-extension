@@ -3,8 +3,8 @@ class Scraper < ActiveRecord::Base
 
   belongs_to :layout, :autosave => true, :dependent => :destroy
 
-  validates_uniqueness_of :title, :case_sensitive => true
-  validates_presence_of :title, :url, :description
+  validates_uniqueness_of :name, :case_sensitive => true
+  validates_presence_of :name, :url, :description
 
   accepts_nested_attributes_for :scraper_inserts
 end

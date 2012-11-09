@@ -8,33 +8,33 @@ class Admin::ScrapersController < Admin::ResourceController
 
   def create
     @scraper = Scraper.new(params[:scraper])
-    @scraper.layout = Layout.new({ :name => "#{@scraper.title} (scraped)" })
+    @scraper.layout = Layout.new({ :name => "#{@scraper.name} (scraped)" })
 
-    save_scraper
+    save_scraper @scraper
   end
 
   def update
     @scraper = Scraper.find(params[:id])
     @scraper.update_attributes(params[:scraper])
 
-    save_scraper :edit
+    save_scraper @scraper, :edit
   end
 
   private
 
-  def save_scraper(action = :new)
-    if !manage_inserts?(@scraper) && @scraper.save
-      scrape_site(@scraper)
+  def save_scraper(scraper, action = :new)
+    if manage_inserts?(scraper) || !scraper.save
+      unless scraper.errors.empty?
+        flash[:error] = scraper.errors.full_messages.join(' ')
+      end
+
+      render :action => action
+    else
+      scrape_site(scraper)
 
       flash[:notice] = "Scraper successfully #{action == :new ? 'created' : 'updated'}"
 
       redirect_to admin_scrapers_path
-    else
-      unless @scraper.errors.empty?
-        flash[:error] = @scraper.errors.full_messages.join(' ')
-      end
-
-      render :action => action
     end
   end
 

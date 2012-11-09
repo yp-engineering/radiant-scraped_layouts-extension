@@ -1,5 +1,4 @@
-one:
-  id: 1
+yellowpages:
   url: http://stage-www.yellowpages.com
-  title: YP.com
+  name: YP.com
   description: YP.com Layout

@@ -1,15 +1,15 @@
 namespace :radiant do
   namespace :extensions do
-    namespace :scraped_layout do
+    namespace :scraped_layouts do
       
       desc "Runs the migration of the Scraped Layout extension"
       task :migrate => :environment do
         require 'radiant/extension_migrator'
         if ENV["VERSION"]
-          ScrapedLayoutExtension.migrator.migrate(ENV["VERSION"].to_i)
+          ScrapedLayoutsExtension.migrator.migrate(ENV["VERSION"].to_i)
           Rake::Task['db:schema:dump'].invoke
         else
-          ScrapedLayoutExtension.migrator.migrate
+          ScrapedLayoutsExtension.migrator.migrate
           Rake::Task['db:schema:dump'].invoke
         end
       end
@@ -17,9 +17,9 @@ namespace :radiant do
       desc "Copies public assets of the Scraped Layout to the instance public/ directory."
       task :update => :environment do
         is_svn_or_dir = proc {|path| path =~ /\.svn/ || File.directory?(path) }
-        puts "Copying assets from ScrapedLayoutExtension"
-        Dir[ScrapedLayoutExtension.root + "/public/**/*"].reject(&is_svn_or_dir).each do |file|
-          path = file.sub(ScrapedLayoutExtension.root, '')
+        puts "Copying assets from ScrapedLayoutsExtension"
+        Dir[ScrapedLayoutsExtension.root + "/public/**/*"].reject(&is_svn_or_dir).each do |file|
+          path = file.sub(ScrapedLayoutsExtension.root, '')
           directory = File.dirname(path)
           mkdir_p RAILS_ROOT + directory, :verbose => false
           cp file, RAILS_ROOT + path, :verbose => false
@@ -29,7 +29,7 @@ namespace :radiant do
       desc "Syncs all available translations for this ext to the English ext master"
       task :sync => :environment do
         # The main translation root, basically where English is kept
-        language_root = ScrapedLayoutExtension.root + "/config/locales"
+        language_root = ScrapedLayoutsExtension.root + "/config/locales"
         words = TranslationSupport.get_translation_keys(language_root)
         
         Dir["#{language_root}/*.yml"].each do |filename|

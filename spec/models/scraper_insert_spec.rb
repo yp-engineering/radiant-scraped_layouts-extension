@@ -4,7 +4,7 @@ describe ScraperInsert do
   fixtures :scraper_inserts
 
   before(:each) do
-    @scraper_insert = scraper_inserts(:one)
+    @scraper_insert = scraper_inserts(:yellowpages_canvas)
   end
 
   it "should be valid" do
