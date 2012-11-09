@@ -201,9 +201,55 @@ describe Admin::ScrapersController do
   end
 
   describe :scrape_site do
-    it 'stuffs content from an external URL into a Scraper\'s associalte Layout'
-    it 'inserts content via the given regex into the HTML returned by the URL'
-    it 'places the Scraper\'s associated Layout into an invalid state when the URL can not be reached'
+    before :each do
+      @scraper_insert = mock_model(ScraperInsert)
+      @scraper_insert.stub!(:regex).and_return(@scraper_insert_params[:regex])
+      @scraper_insert.stub!(:content).and_return(@scraper_insert_params[:content])
+
+      @scraper_inserts = [@scraper_insert]
+      @scraper.stub!(:scraper_inserts).and_return(@scraper_inserts)
+
+      @layout = mock_model(Layout)
+      @layout.stub!(:content=)
+      @layout.stub!(:generated=)
+      @scraper.stub!(:layout).and_return(@layout)
+
+      @uri = URI(@scraper.url)
+      @response = mock(Object)
+      @response.stub!(:body).and_return('Text')
+
+      @regex = Regexp.new(@scraper_insert.regex)
+      Regexp.stub!(:new).and_return(@regex)
+
+      controller.stub!(:URI).and_return(@uri)
+    end
+
+    it 'stuffs content from an external URL into a Scraper\'s associalte Layout' do
+      Net::HTTP.should_receive(:get_response).with(@uri).and_return(@response)
+
+      @layout.should_receive(:content=).with(anything)
+      @layout.should_receive(:generated=).with(true)
+
+      controller.send(:scrape_site, @scraper)
+    end
+
+    it 'inserts content via the given regex into the HTML returned by the URL' do
+      Net::HTTP.should_receive(:get_response).with(@uri).and_return(@response)
+
+      @layout.should_receive(:content=).with('New')
+      @layout.should_receive(:generated=).with(true)
+
+      controller.send(:scrape_site, @scraper)
+    end
+
+    it 'places the Scraper\'s associated Layout into an invalid state when the URL can not be reached' do
+      Net::HTTP.should_receive(:get_response).with(@uri).and_raise('Random exception')
+
+      @layout.should_receive(:content=).with(nil)
+      @layout.should_receive(:generated=).with(false)
+
+      controller.send(:scrape_site, @scraper)
+    end
   end
 
 end
