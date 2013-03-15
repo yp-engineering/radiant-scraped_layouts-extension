@@ -12,10 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = RadiantScrapedLayoutsExtension::SUMMARY
   s.description = RadiantScrapedLayoutsExtension::DESCRIPTION
 
-  # Define gem dependencies here.
-  # Don't include a dependency on radiant itself: it causes problems when radiant is in vendor/radiant.
-  # s.add_dependency "something", "~> 1.0.0"
-  # s.add_dependency "radiant-some-extension", "~> 1.0.0"
+  s.add_dependency "radiant", "~> 1.1.0"
 
   ignores = if File.exist?('.gitignore')
     File.read('.gitignore').split("\n").inject([]) {|a,p| a + Dir[p] }
@@ -24,6 +21,5 @@ Gem::Specification.new do |s|
   end
   s.files         = Dir['**/*'] - ignores
   s.test_files    = Dir['test/**/*','spec/**/*','features/**/*'] - ignores
-  # s.executables   = Dir['bin/*'] - ignores
   s.require_paths = ["lib"]
 end
