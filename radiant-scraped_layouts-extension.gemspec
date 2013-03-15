@@ -15,11 +15,12 @@ Gem::Specification.new do |s|
   s.add_dependency "radiant", "~> 1.1.0"
 
   ignores = if File.exist?('.gitignore')
-    File.read('.gitignore').split("\n").inject([]) {|a,p| a + Dir[p] }
+    File.read('.gitignore').split("\n").collect { |a| d = Dir["./#{a}/**/*"]; (d.empty? ? a : d) }.flatten
   else
     []
   end
-  s.files         = Dir['**/*'] - ignores
+
+  s.files         = Dir['./**/*'] - ignores
   s.test_files    = Dir['test/**/*','spec/**/*','features/**/*'] - ignores
   s.require_paths = ["lib"]
 end
